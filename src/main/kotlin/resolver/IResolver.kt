@@ -1,5 +1,6 @@
 package resolver
 
+import model.Player
 import model.Team
 
 interface IResolver {
@@ -15,4 +16,7 @@ interface IResolver {
 
     // Выберите команду с наибольшим числом удалений на одного игрока.
     fun getTheRudestTeam(): Team
+
+    //Топ 10 команд с наибольшей суммарной трансферной стоимостью
+    fun topTeamsByTransferCost(): List<Pair<Team, Int>>
 }
