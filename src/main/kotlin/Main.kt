@@ -1,3 +1,9 @@
+import parser.CsvParser
+
 fun main(args: Array<String>) {
-    print("Yeah rock!")
+    val footballData = CsvParser.parse("")
+    val footballManager = FootballManager(footballData)
+
+    val playerList = footballManager.getPlayerList()
+    val teamList = footballManager.getTeamList()
 }
