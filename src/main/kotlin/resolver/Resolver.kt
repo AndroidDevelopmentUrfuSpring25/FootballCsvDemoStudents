@@ -2,7 +2,6 @@ package resolver
 import model.Player
 import model.Team
 import parser.CsvParser
-import java.util.Scanner
 
 class Resolver(
     private val players: List<Player> = CsvParser.readPlayers("main")
@@ -10,6 +9,7 @@ class Resolver(
 
     override fun getCountWithoutAgency(): Int {
         return players.count { it.agency.isNullOrBlank() }
+
     }
 
     override fun getBestScorerDefender(): Pair<String, Int> {
