@@ -8,11 +8,15 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven("https://packages.jetbrains.team/maven/p/kds/kotlin-ds-maven")
 }
 
 dependencies {
     testImplementation(kotlin("test"))
     implementation("com.github.javafaker:javafaker:1.0.2")
+    implementation("org.apache.commons:commons-csv:1.5")
+    implementation("org.jfree:jfreechart:1.5.3")
+
 }
 
 tasks.test {
