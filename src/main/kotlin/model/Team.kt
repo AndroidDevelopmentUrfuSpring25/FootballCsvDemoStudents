@@ -5,9 +5,9 @@ package model
  */
 class Team(
     val name: String,
-    val city: String
+    val city: String?
 ){
-    private var players: MutableSet<Player> = mutableSetOf()
+    private val players: MutableSet<Player> = mutableSetOf()
 
     /**
      * Добавляет игрока в команду
