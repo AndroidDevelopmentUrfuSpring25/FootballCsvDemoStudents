@@ -1,6 +1,7 @@
 package resolver
 
 import model.Team
+import model.Player
 
 interface IResolver {
 
@@ -13,6 +14,6 @@ interface IResolver {
     // Выведите русское название позиции самого дорогого немецкого игрока.
     fun getTheExpensiveGermanPlayerPosition(): String
 
-    // Выберите команду с наибольшим числом удалений на одного игрока.
+    // Выберите команду с наибольшим средним числом красных карточек на одного игрока.
     fun getTheRudestTeam(): Team
 }
