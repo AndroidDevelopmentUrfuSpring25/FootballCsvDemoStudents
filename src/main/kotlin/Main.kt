@@ -27,7 +27,7 @@ fun main() {
 
     println("Количество игроков без агенства: ${resolver.getCountWithoutAgency()}")
     val bestDefender = resolver.getBestScorerDefender()
-    println("\nЛучший защитник: ${bestDefender.first}, ${bestDefender.second}")
+    println("\nЛучший защитник: ${bestDefender.first}, ${bestDefender.second} голов")
     println("\nПозиция самого дорогого немецкого игрока: ${resolver.getTheExpensiveGermanPlayerPosition()}")
     println("\nКоманда с наибольшим количеством красных карточек: ${resolver.getTheRudestTeam().Name}")
 }
