@@ -3,6 +3,7 @@ package resolver
 import parser.CsvParser
 
 fun main() {
+
     val players = CsvParser.readPlayers("src/main/resources/fakePlayers.csv")
 
     val resolver = Resolver(players)
