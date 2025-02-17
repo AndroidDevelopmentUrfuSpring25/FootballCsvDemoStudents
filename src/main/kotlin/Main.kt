@@ -1,7 +1,5 @@
-import org.jfree.chart.ChartPanel
 import parser.CsvParser
 import resolver.Resolver
-import javax.swing.JFrame
 
 fun main(args: Array<String>) {
     val footballData = CsvParser.parse("src/main/resources/fakePlayers.csv")

@@ -6,19 +6,20 @@ import model.Team
  * Обрабатывает и хранит данные о футболистах и командах
  */
 class FootballManager(
-    footballData:List<Map<NameParameters, String>>
+    footballData: List<Map<NameParameters, String>>
 ) {
     private val playerList = mutableListOf<Player>()
     private val teamMap = mutableMapOf<String, Team>()
 
-    init{
-        for(footballerData in footballData){
+    init {
+        for (footballerData in footballData) {
 
             val player = Player(
                 name = footballerData[NameParameters.NAME],
                 positionOnField = typifyPosition(
                     footballerData[NameParameters.POSITION],
-                    footballerData[NameParameters.NAME]),
+                    footballerData[NameParameters.NAME]
+                ),
                 nationality = footballerData[NameParameters.NATIONALITY],
                 agency = footballerData[NameParameters.AGENCY],
                 transferCost = footballerData[NameParameters.TRANSFER_COST]?.toIntOrNull(),
@@ -43,15 +44,15 @@ class FootballManager(
         }
     }
 
-    private fun typifyPosition(stringPosition: String?, name:String?):PositionTranslation{
-        stringPosition?: throw Exception("Позиция игрока $name не найдена")
+    private fun typifyPosition(stringPosition: String?, name: String?): PositionTranslation {
+        stringPosition ?: throw Exception("Позиция игрока $name не найдена")
         val position = PositionTranslation.entries.find {
             it.name == (stringPosition.uppercase())
-        }?: throw Exception("Неизвестная позиция $stringPosition")
+        } ?: throw Exception("Неизвестная позиция $stringPosition")
         return position
     }
 
-    fun getPlayerList():List<Player> = playerList.toList()
+    fun getPlayerList(): List<Player> = playerList.toList()
 
-    fun getTeamList():List<Team> = teamMap.values.toList()
+    fun getTeamList(): List<Team> = teamMap.values.toList()
 }

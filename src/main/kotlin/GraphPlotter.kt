@@ -1,14 +1,13 @@
 import model.PositionTranslation
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.ChartPanel
-import org.jfree.chart.JFreeChart
 import org.jfree.data.general.DefaultPieDataset
 import javax.swing.JFrame
 
 /**
  * Отображет графики
  */
-object GraphPlotter{
+object GraphPlotter {
     /**
      * Отображает круговую диаграмму по словарю
      */
@@ -17,7 +16,7 @@ object GraphPlotter{
             data.forEach { (key, value) -> setValue(key.translation, value.toDouble()) }
         }
 
-        val chart =  ChartFactory.createPieChart(
+        val chart = ChartFactory.createPieChart(
             "Распределение по позициям",
             dataset,
             true,

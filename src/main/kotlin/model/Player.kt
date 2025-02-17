@@ -3,7 +3,7 @@ package model
 /**
  * Класс данных футболиста
  */
-class Player (
+class Player(
     val name: String?,
     val positionOnField: PositionTranslation,
     val nationality: String?,

@@ -1,7 +1,7 @@
 /**
  * Названия категорий
  */
-enum class NameParameters(val title:String) {
+enum class NameParameters(val title: String) {
     NAME("Name"),
     TEAM("Team"),
     CITY("City"),
