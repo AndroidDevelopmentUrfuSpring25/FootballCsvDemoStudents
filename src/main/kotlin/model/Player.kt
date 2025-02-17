@@ -5,7 +5,7 @@ package model
  */
 class Player (
     val name: String?,
-    val positionOnField: String?,
+    val positionOnField: PositionTranslation,
     val nationality: String?,
     val agency: String?,
     val transferCost: Int?,

@@ -19,4 +19,12 @@ class Team(
     fun getPlayers():Set<Player>{
         return players.toSet()
     }
+
+    fun getDescription():String{
+        return """
+            Team: $name
+            City: $city
+            Players count: ${players.size}
+        """.trimIndent()
+    }
 }

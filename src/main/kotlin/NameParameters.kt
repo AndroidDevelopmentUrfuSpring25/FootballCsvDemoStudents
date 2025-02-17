@@ -1,6 +1,3 @@
-import kotlin.reflect.KType
-import kotlin.reflect.typeOf
-
 /**
  * Названия категорий
  */
