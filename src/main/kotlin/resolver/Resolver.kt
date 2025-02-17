@@ -1,3 +1,8 @@
 package resolver
 
-class Resolver
+/**
+ * Решает задачи
+ */
+class Resolver{
+
+}
