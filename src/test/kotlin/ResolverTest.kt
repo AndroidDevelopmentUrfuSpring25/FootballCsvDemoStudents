@@ -69,14 +69,16 @@ class ResolverTest {
     @Test
     fun getTheRudestTeamWithCorrectPlayersTest() {
         val resolver = Resolver(correctPlayers)
-        assertEquals("TeamName2", resolver.getTheRudestTeam().name )
+        assertEquals("TeamName2", resolver.getTheRudestTeam().name)
     }
 
     @Test
     fun getTheRudestTeamWithEmptyPlayersTest() {
         val resolver = Resolver(emptyList())
-        val call = { resolver.getTheRudestTeam() }
-        assertThrows<Exception> { call() }
+        val exception = assertThrows<Exception> {
+            resolver.getTheRudestTeam()
+        }
+        assertEquals("Empty players list", exception.message)
     }
 
     @Test
@@ -88,17 +90,20 @@ class ResolverTest {
     @Test
     fun getTheExpensiveGermanPlayerPositionEmptyPlayersTest() {
         val resolver = Resolver(emptyList())
-        val call = { resolver.getTheExpensiveGermanPlayerPosition() }
-        assertThrows<Exception> { call() }
+        val exception = assertThrows<Exception> {
+            resolver.getTheExpensiveGermanPlayerPosition()
+        }
+        assertEquals("Germany player no founded", exception.message)
     }
 
     @Test
     fun getTheExpensiveGermanPlayerPositionWithoutGermanyPlayersTest() {
         val resolver = Resolver(playersWithoutDefendersAndGermanyNationality)
-        val call = { resolver.getTheExpensiveGermanPlayerPosition() }
-        assertThrows<Exception> { call() }
+        val exception = assertThrows<Exception> {
+            resolver.getTheExpensiveGermanPlayerPosition()
+        }
+        assertEquals("Germany player no founded", exception.message)
     }
-
 
     @Test
     fun getBestScorerDefenderWithCorrectPlayersTest() {
@@ -111,7 +116,9 @@ class ResolverTest {
     @Test
     fun getBestScorerDefenderWithoutDefenderPlayersTest() {
         val resolver = Resolver(playersWithoutDefendersAndGermanyNationality)
-        val call = { resolver.getBestScorerDefender() }
-        assertThrows<Exception> { call() }
+        val exception = assertThrows<Exception> {
+            resolver.getBestScorerDefender()
+        }
+        assertEquals("Defenders not founded", exception.message)
     }
 }

@@ -20,7 +20,8 @@ class Resolver(private val players: List<Player>) : IResolver {
 
     override fun getTheExpensiveGermanPlayerPosition(): String {
         return players.filter { it.nationality == "Germany" }
-            .maxBy { it.transferCost }.position.russianName
+            .maxByOrNull { it.transferCost }?.position?.russianName
+            ?: throw Exception("Germany player no founded")
     }
 
     override fun getTheRudestTeam(): Team {

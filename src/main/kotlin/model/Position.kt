@@ -5,11 +5,13 @@ enum class Position(val russianName: String) {
     DEFENDER("Защитник"),
     GOALKEEPER("Вратарь"),
     FORWARD("Нападающий"),
-    NONE("Не указано");
+    NONE("Не указано"),
+    UNKNOWN("Неизвестно");
 
     companion object {
         fun getByValue(value: String): Position {
-            return entries.find { it.name == value } ?: NONE
+            if (value == "") return NONE
+            return entries.find { it.name == value } ?: UNKNOWN
         }
     }
 }
