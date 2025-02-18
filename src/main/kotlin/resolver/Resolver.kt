@@ -26,7 +26,12 @@ class Resolver(private val players: List<Player>) : IResolver {
     }
 
     override fun getTheRudestTeam(): Team {
-        return players.groupBy { it.Team }.maxBy { it -> it.value.sumOf { it.RedCards } }.key
+        return players
+            .groupBy { it.Team.Name }
+            .mapValues { team -> team.value.map { it.RedCards }.average() }
+            .maxBy { it.value }.let {
+                players.first { player -> player.Team.Name == it.key }.Team
+            }
     }
 
 }
