@@ -1,3 +1,3 @@
 package model
 
-class Team(val Name: String, val City: String) {}
+class Team(val name: String, val city: String) {}

@@ -13,20 +13,20 @@ fun main(args: Array<String>) {
 
     val players = input.map { row ->
         Player(
-            Name = row["Name"]!!,
-            Team = Team(
-                Name = row["Team"]!!,
-                City = row["City"]!!
+            name = row["Name"]!!,
+            team = Team(
+                name = row["Team"]!!,
+                city = row["City"]!!
             ),
-            Position = row["Position"]!!,
-            Nationality = row["Nationality"]!!,
-            Agency = row["Agency"]!!,
-            TransferCost = row["Transfer cost"]!!.toInt(),
-            Participations = row["Participations"]!!.toInt(),
-            Goals = row["Goals"]!!.toInt(),
-            Assists = row["Assists"]!!.toInt(),
-            YellowCards = row["Yellow cards"]!!.toInt(),
-            RedCards = row["Red cards"]!!.toInt()
+            position = row["Position"]!!,
+            nationality = row["Nationality"]!!,
+            agency = row["Agency"]!!,
+            transferCost = row["Transfer cost"]!!.toInt(),
+            participations = row["Participations"]!!.toInt(),
+            goals = row["Goals"]!!.toInt(),
+            assists = row["Assists"]!!.toInt(),
+            yellowCards = row["Yellow cards"]!!.toInt(),
+            redCards = row["Red cards"]!!.toInt()
         )
     }
 
@@ -35,14 +35,14 @@ fun main(args: Array<String>) {
     println("Количество игроков без агентства: ${resolver.getCountWithoutAgency()}")
     println("Лучший бомбардир среди защитников: ${resolver.getBestScorerDefender()}")
     println("Самый дорогой немец по позиции: ${resolver.getTheExpensiveGermanPlayerPosition()}")
-    println("Самая грубая команда: ${resolver.getTheRudestTeam().Name} (${resolver.getTheRudestTeam().City})")
+    println("Самая грубая команда: ${resolver.getTheRudestTeam().name} (${resolver.getTheRudestTeam().city})")
     println("--------------------------")
 
-    val forwards = players.filter { it.Position == "FORWARD" }
+    val forwards = players.filter { it.position == "FORWARD" }
 
     val forwardsData = mapOf(
-        "Goals" to forwards.map { it.Goals }.sorted(),
-        "TransferCost" to forwards.map { it.TransferCost }.sorted()
+        "Goals" to forwards.map { it.goals }.sorted(),
+        "TransferCost" to forwards.map { it.transferCost }.sorted()
     )
 
     forwardsData.plot {

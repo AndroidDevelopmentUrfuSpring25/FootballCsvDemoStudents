@@ -1,15 +1,15 @@
 package model
 
 class Player(
-    val Name: String,
-    val Team: Team,
-    val Position: String,
-    val Nationality: String,
-    val Agency: String,
-    val TransferCost: Int,
-    val Participations: Int,
-    val Goals: Int,
-    val Assists: Int,
-    val YellowCards: Int,
-    val RedCards: Int
+    val name: String,
+    val team: Team,
+    val position: String,
+    val nationality: String,
+    val agency: String,
+    val transferCost: Int,
+    val participations: Int,
+    val goals: Int,
+    val assists: Int,
+    val yellowCards: Int,
+    val redCards: Int
 ) {}

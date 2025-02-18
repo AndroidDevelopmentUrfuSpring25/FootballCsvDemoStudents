@@ -6,31 +6,31 @@ import model.Team
 
 class Resolver(private val players: List<Player>) : IResolver {
     override fun getCountWithoutAgency(): Int {
-        return players.count { it.Agency == "" }
+        return players.count { it.agency == "" }
     }
 
     override fun getBestScorerDefender(): Pair<String, Int> {
         val bestScorer = players
-            .filter { it.Position == "DEFENDER" }
-            .maxBy { it.Goals }
+            .filter { it.position == "DEFENDER" }
+            .maxBy { it.goals }
 
-        return bestScorer.Name to bestScorer.Goals
+        return bestScorer.name to bestScorer.goals
     }
 
     override fun getTheExpensiveGermanPlayerPosition(): String {
         val expensiveGerman = players
-            .filter { it.Nationality == "Germany" }
-            .maxBy { it.TransferCost }
+            .filter { it.nationality == "Germany" }
+            .maxBy { it.transferCost }
 
-        return PlayerPosition.valueOf(expensiveGerman.Position).russianName
+        return PlayerPosition.valueOf(expensiveGerman.position).russianName
     }
 
     override fun getTheRudestTeam(): Team {
         return players
-            .groupBy { it.Team.Name }
-            .mapValues { team -> team.value.map { it.RedCards }.average() }
+            .groupBy { it.team.name }
+            .mapValues { team -> team.value.map { it.redCards }.average() }
             .maxBy { it.value }.let {
-                players.first { player -> player.Team.Name == it.key }.Team
+                players.first { player -> player.team.name == it.key }.team
             }
     }
 
