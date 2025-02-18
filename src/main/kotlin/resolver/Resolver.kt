@@ -27,14 +27,12 @@ class PlayerStatisticsResolver(private val players: List<Player>) : IResolver {
         return players
             .filter { it.Nationality == "Germany" }
             .maxByOrNull { it.TransferCost }
-            ?.let { PlayerPosition.valueOf(it.Position).russianName }
-            ?: "Нападающий"
+            ?.let { PlayerPosition.valueOf(it.Position).russianName }.toString()
     }
 
     override fun getTheRudestTeam(): Team {
         return players.groupBy { it.Team }
-            .maxByOrNull { it.value.sumOf { it.RedCards } }
-            ?.key
-            ?: Team("", "")
+            .maxBy { it.value.map { it.RedCards }.average() }
+            .key
     }
 }

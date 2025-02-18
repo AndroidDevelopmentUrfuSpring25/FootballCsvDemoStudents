@@ -10,7 +10,6 @@ fun main() {
             Name = row["Name"]!!,
             Team = Team(
                 Name = row["Team"]!!,
-                City = row["City"]!!
             ),
             Position = row["Position"]!!,
             Nationality = row["Nationality"]!!,
