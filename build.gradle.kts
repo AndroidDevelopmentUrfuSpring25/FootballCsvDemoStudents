@@ -26,3 +26,5 @@ kotlin {
 application {
     mainClass.set("MainKt")
 }
+
+
