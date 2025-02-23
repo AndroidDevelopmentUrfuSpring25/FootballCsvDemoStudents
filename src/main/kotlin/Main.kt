@@ -21,4 +21,3 @@ fun main(args: Array<String>) {
 
     ChartRenderer.visualizeChart(resolver)
 }
-
