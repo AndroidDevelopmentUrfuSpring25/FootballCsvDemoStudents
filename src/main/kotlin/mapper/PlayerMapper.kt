@@ -13,7 +13,7 @@ class PlayerMapper {
                 team = Team(name = columns[1], city = columns[2]),
                 position = Position.getOrDefault(columns[3]),
                 nationality = columns[4],
-                agency = if (columns[5].isBlank()) null else columns[5],
+                agency = columns[5].takeIf { it.isNotBlank() },
                 transferCost = columns[6].toLongOrNull() ?: 0,
                 participationCount = columns[7].toIntOrNull() ?: 0,
                 goals = columns[8].toIntOrNull() ?: 0,
