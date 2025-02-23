@@ -21,7 +21,7 @@ object CsvParser {
             Player(
                 name = playerParts[0],
                 team = Team(name = playerParts[1], city = playerParts[2]),
-                position = Position.valueOf(playerParts[3]),
+                position = Position.getByValue(playerParts[3]),
                 nationality = playerParts[4],
                 agency = playerParts[5],
                 transferCost = playerParts[6].toIntOrNull().orZero(),
