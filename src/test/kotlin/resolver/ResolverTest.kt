@@ -65,7 +65,7 @@ class ResolverTest {
             )
         )
 
-        assertEquals(team1, resolver.getTheRudestTeam().name)
+        assertEquals(team2, resolver.getTheRudestTeam().name)
     }
 
     @Test

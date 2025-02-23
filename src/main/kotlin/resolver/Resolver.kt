@@ -32,10 +32,7 @@ class Resolver(
         val redCardsCountByTeam = playersData.stream().collect(
             Collectors.groupingBy(
                 { player -> player.team },
-                Collectors.mapping(
-                    { player -> player.redCardsCount },
-                    Collectors.counting()
-                )
+                Collectors.averagingInt { player -> player.redCardsCount }
             )
         )
 
