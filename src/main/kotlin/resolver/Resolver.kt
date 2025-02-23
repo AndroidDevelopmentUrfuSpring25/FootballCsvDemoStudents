@@ -4,52 +4,31 @@ import dto.player.Position
 import model.Player
 import model.Team
 import org.apache.commons.lang3.StringUtils
-import java.util.stream.Collectors
 
 class Resolver(
     private val playersData: List<Player>
 ) : IResolver {
 
-    override fun getCountWithoutAgency(): Int {
-        return playersData.count { player -> StringUtils.isBlank(player.agency) }
-    }
+    override fun getCountWithoutAgency(): Int =playersData
+        .count { player -> StringUtils.isBlank(player.agency) }
 
-    override fun getBestScorerDefender(): Pair<String, Int> {
-        val bestScorer = playersData.filter { player -> player.position == Position.DEFENDER }
-            .maxBy { player -> player.goals }
+    override fun getBestScorerDefender(): Pair<String, Int> = playersData
+        .filter { player -> player.position == Position.DEFENDER }
+        .maxBy { player -> player.goals }
+        .let { bestScorer -> Pair(bestScorer.name, bestScorer.goals) }
 
-        return Pair(bestScorer.name, bestScorer.goals)
-    }
+    override fun getTheExpensiveGermanPlayerPosition(): String = playersData
+        .filter { player -> player.nationality == "Germany" }
+        .maxBy { player -> player.transferCost }.position.name
 
-    override fun getTheExpensiveGermanPlayerPosition(): String {
-        val expensiveGermanPlayer = playersData.filter { player -> player.nationality == "Germany" }
-            .maxBy { player -> player.transferCost }
+    override fun getTheRudestTeam(): Team = playersData
+        .groupBy { player -> player.team }
+        .mapValues { entry -> entry.value.map { team -> team.redCardsCount }.average() }
+        .maxBy { entry -> entry.value }.key
 
-        return expensiveGermanPlayer.position.name
-    }
-
-    override fun getTheRudestTeam(): Team {
-        val redCardsCountByTeam = playersData.stream().collect(
-            Collectors.groupingBy(
-                { player -> player.team },
-                Collectors.averagingInt { player -> player.redCardsCount }
-            )
-        )
-
-        return redCardsCountByTeam.maxBy { entry -> entry.value }.key
-    }
-
-    fun getTenMostExpensiveTeams(): List<Pair<Team, Long>> {
-        val teamsTransferCost = playersData.stream().collect(
-            Collectors.groupingBy(
-                { player -> player.team },
-                Collectors.summingLong { player -> player.transferCost }
-            )
-        )
-
-        return teamsTransferCost.entries
-            .sortedByDescending { entry -> entry.value }
-            .map { entry -> Pair(entry.key, entry.value) }
-            .take(10)
-    }
+    fun getTenMostExpensiveTeams(): List<Pair<Team, Long>> = playersData.groupBy { player -> player.team }
+        .mapValues { entry -> entry.value.sumOf { team -> team.transferCost } }.entries
+        .sortedByDescending { it.value }
+        .map { entry -> Pair(entry.key, entry.value) }
+        .take(10)
 }

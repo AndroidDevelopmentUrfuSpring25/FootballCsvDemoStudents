@@ -3,24 +3,23 @@ package mapper
 import dto.player.Position
 import model.Player
 import model.Team
-import org.apache.commons.lang3.StringUtils
 
 class PlayerMapper {
 
     companion object {
         fun fetchDto(columns: List<String>): Player {
             return Player(
-                columns[0],
-                Team(columns[1], columns[2]),
-                Position.valueOf(columns[3]),
-                columns[4],
-                if (StringUtils.isBlank(columns[5])) null else columns[5],
-                columns[6].toLong(),
-                columns[7].toInt(),
-                columns[8].toInt(),
-                columns[9].toInt(),
-                columns[10].toInt(),
-                columns[11].toInt()
+                name = columns[0],
+                team = Team(name = columns[1], city = columns[2]),
+                position = Position.getOrDefault(columns[3]),
+                nationality = columns[4],
+                agency = if (columns[5].isBlank()) null else columns[5],
+                transferCost = columns[6].toLongOrNull() ?: 0,
+                participationCount = columns[7].toIntOrNull() ?: 0,
+                goals = columns[8].toIntOrNull() ?: 0,
+                assists = columns[9].toIntOrNull() ?: 0,
+                yellowCardsCount = columns[10].toIntOrNull() ?: 0,
+                redCardsCount = columns[11].toIntOrNull() ?: 0
             )
         }
     }
