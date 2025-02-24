@@ -13,6 +13,8 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
     implementation("com.github.javafaker:javafaker:1.0.2")
+    implementation("com.opencsv:opencsv:5.7.1")
+    implementation("org.jfree:jfreechart:1.5.3")
 }
 
 tasks.test {
