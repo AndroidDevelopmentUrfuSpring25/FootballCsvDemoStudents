@@ -8,7 +8,8 @@ enum class Position(val russianName: String) {
 
     companion object {
         fun from(s: String): Position {
-            return entries.find { it.name == s } ?: throw IllegalArgumentException("Unknown Position")
+            return entries.find { it.name == s }
+                ?: throw IllegalArgumentException("Unknown Position")
         }
     }
 }

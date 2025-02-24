@@ -2,7 +2,7 @@ import model.Position
 import parser.CsvParser
 import resolver.Resolver
 
-fun main(){
+fun main() {
     val players = CsvParser.readCsv("src/main/resources/fakePlayers.csv")
     val resolver = Resolver(players)
 
