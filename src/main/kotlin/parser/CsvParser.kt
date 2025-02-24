@@ -2,59 +2,45 @@ package parser
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
 import java.io.File
-import java.nio.charset.StandardCharsets
 import model.Player
+import model.Position
 import model.Team
 
-fun readCsv(filePath: String): List<Player> {
-    val file = File(filePath)
-    val player = mutableListOf<Player>()
+object CsvParser {
+    fun readCsv(filePath: String): List<Player> {
+        val teams = mutableMapOf<String, Team>()
+        val players = mutableListOf<Player>()
 
-    file.reader(StandardCharsets.UTF_8).use { reader ->
+        val file = File(filePath)
+        val reader = file.bufferedReader()
         val csvParser = CSVParser(reader, CSVFormat.DEFAULT.withDelimiter(';').withFirstRecordAsHeader())
 
         for (record in csvParser) {
-            val person = Player(
-                name = record["Name"] ?: "Unknown",
-                team = record["Team"] ?: "Unknown",
-                city = record["City"] ?: "Unknown",
-                position = record["Position"] ?: "Unknown",
-                nationality = record["Nationality"] ?: "Unknown",
-                agency = record["Agency"] ?: "Unknown",
-                transfer = record["Transfer cost"] ?: "Unknown",
-                participation = record["Participations"] ?: "Unknown",
-                goals = record["Goals"] ?: "Unknown",
-                assists = record["Assists"] ?: "Unknown",
-                yellow = record["Yellow cards"] ?: "Unknown",
-                red = record["Red cards"] ?: "Unknown"
+            val teamName = record["Team"]
+            val city = record["City"]
+            val team = teams.getOrPut(teamName) { Team(teamName, city) }
+            val position = Position.valueOf(record["Position"])
+            val player = Player(
+                name = record["Name"] ?: "",
+                team = team,
+                position = position,
+                nationality = record["Nationality"] ?: "",
+                agency = record["Agency"] ?: "",
+                transfer = record["Transfer cost"]?.toIntOrNull() ?: 0,
+                participation = record["Participations"]?.toIntOrNull() ?: 0,
+                goals = record["Goals"]?.toIntOrNull() ?: 0,
+                assists = record["Assists"]?.toIntOrNull() ?: 0,
+                yellow = record["Yellow cards"]?.toIntOrNull() ?: 0,
+                red = record["Red cards"]?.toIntOrNull() ?: 0
             )
-            player.add(person)
-        }
-    }
 
-    return player
-}
-fun groupPlayersByTeam(players: List<Player>): List<Team> {
-    return players.groupBy { it.team }
-        .map { (teamName, teamPlayers) ->
-            Team(
-                name = teamName,
-                city = teamPlayers.firstOrNull()?.city ?: "Unknown",
-                players = teamPlayers
-            )
+            players.add(player)
         }
+
+        csvParser.close()
+        return players
+    }
 }
 
-fun main() {
-    val players = readCsv("src/main/resources/fakePlayers.csv")
-    val teams = groupPlayersByTeam(players)
-    teams.forEach { team ->
-        println("Команда: ${team.name} (${team.city})")
-        team.players.forEach { player ->
-            println("  - ${player.name}, позиция: ${player.position}")
-        }
-        println()
-    }
-    players.forEach { println(it) }
-}
+
 

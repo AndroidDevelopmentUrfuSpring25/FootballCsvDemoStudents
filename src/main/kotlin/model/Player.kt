@@ -1,16 +1,15 @@
 package model
 
-data class Player (
+data class Player(
     val name: String,
-    val team: String,
-    val city: String,
-    val position: String,
+    val team: Team,
+    val position: Position,
     val nationality: String,
     val agency: String,
-    val transfer: String,
-    val participation: String,
-    val goals: String,
-    val assists: String,
-    val yellow: String,
-    val red: String,
+    val transfer: Int,
+    val participation: Int,
+    val goals: Int,
+    val assists: Int,
+    val yellow: Int,
+    val red: Int,
 )

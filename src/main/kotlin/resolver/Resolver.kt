@@ -1,53 +1,46 @@
 package resolver
 import model.Team
+import model.Position
+import model.Player
 
-private val translate = mapOf(
-    "FORWARD" to "Нападающий"
-)
 
-class Resolver(private val teams: List<Team>) : IResolver{
+class Resolver(private val players: List<Player>) : IResolver{
 
     override fun getCountWithoutAgency(): Int {
-        return  teams
-            .flatMap { it.players }
-            .count {it.agency == ""}
+        return players.count { it.agency.isEmpty()}
     }
 
     override fun getBestScorerDefender(): Pair<String, Int> {
-        return teams
-            .flatMap { it.players }
-            .filter { it.position == "DEFENDER" }
-            .maxBy { it.goals.toInt() }
-            .let { it.name to (it.goals.toInt() ) }
+        return players
+            .filter { it.position == Position.DEFENDER }
+            .maxByOrNull { it.goals }
+            ?.let { it.name to (it.goals) }
+            ?: throw Exception("Нет защитников")
     }
 
     override fun getTheExpensiveGermanPlayerPosition(): String {
-        return teams
-            .flatMap { it.players }
-            .filter { it.nationality == "Germany" }
-            .maxBy { it.transfer.toInt() }
-            .let { translate[it.position].toString() }
+        return players
+        .filter { it.nationality == "Germany" }
+        .maxBy { it.transfer}.position.russianNames
     }
 
     override fun getTheRudestTeam(): Team {
-        return teams.mapNotNull { team ->
-            val totalRedCards = team.players.sumOf { it.red.toInt() }
-            val playerCount = team.players.size
-
-            if (playerCount > 0) {
-                team to totalRedCards.toDouble() / playerCount
-            } else null
-        }
-            .maxByOrNull { it.second }?.first ?: teams.first()
+        return players
+            .groupBy { it.team }
+            .maxByOrNull { (_, teamPlayers) -> teamPlayers.map { it.red }.average() }
+            ?.key
+            ?: throw  Exception("Error")
     }
 
     override fun topTen(): List<Pair<String, Int>> {
 
-        return teams.map { team ->
-            val sumTransferCost = team.players.sumOf { it.transfer.toInt() }
-            team.name to sumTransferCost
-        }
+        return players
+            .groupBy { it.team }
+            .map { (team, teamPlayers) ->
+                team.name to teamPlayers.sumOf { it.transfer }
+            }
             .sortedByDescending { it.second }
             .take(10)
+
     }
 }
