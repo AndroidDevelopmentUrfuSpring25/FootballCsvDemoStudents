@@ -2,6 +2,7 @@ package parser
 
 import java.io.File
 import model.Player
+import model.Position
 import model.Team
 
 object CsvParser{
@@ -26,15 +27,15 @@ object CsvParser{
             val player = Player(
                 name =  row["Name"] ?: error("No player name"),
                 team = team,
-                position =  row["Position"] ?: error("No player position"),
+                position =  Position.from(row["Position"] ?: error("No player position")),
                 nationality =  row["Nationality"] ?: error("No player nationality"),
                 agency =  row["Agency"] ?: error("No player agency"),
-                transfercost =  row["Transfer cost"]?.toInt() ?: 0,
-                participations =  row["Participations"]?.toInt() ?: 0,
-                goals =  row["Goals"]?.toInt() ?: 0,
-                assists =  row["Assists"]?.toInt() ?: 0,
-                yellow_cards =  row["Yellow cards"]?.toInt() ?: 0,
-                red_cards =  row["Red cards"]?.toInt() ?: 0,
+                transfercost =  row["Transfer cost"]?.toIntOrNull() ?: 0,
+                participations =  row["Participations"]?.toIntOrNull() ?: 0,
+                goals =  row["Goals"]?.toIntOrNull() ?: 0,
+                assists =  row["Assists"]?.toIntOrNull() ?: 0,
+                yellowCards =  row["Yellow cards"]?.toIntOrNull() ?: 0,
+                redCards =  row["Red cards"]?.toIntOrNull() ?: 0,
             )
             players.add(player)
 
