@@ -11,11 +11,11 @@ object CsvParser {
 
         val players = mutableListOf<Player>()
 
-        for (line in lines) {
+        lines.forEach { line ->
             val fields = line.split(";").map { it.trim() }
 
             if (fields.size != 12) {
-                throw IndexOutOfBoundsException("Invalid player data")
+                throw IllegalArgumentException("Invalid player data")
             }
 
             val player = Player(
