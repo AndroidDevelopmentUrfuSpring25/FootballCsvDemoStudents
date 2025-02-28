@@ -8,7 +8,7 @@ import parser.CsvParser
 class Resolver(private val players: List<Player> = CsvParser.parse()) : IResolver {
 
     override fun getCountWithoutAgency(): Int {
-        return players.count { it.agency == "" }
+        return players.count { it.agency.isBlank() }
     }
 
     override fun getBestScorerDefender(): Pair<String, Int> {
@@ -26,11 +26,7 @@ class Resolver(private val players: List<Player> = CsvParser.parse()) : IResolve
     override fun getTheRudestTeam(): Team {
         return players
             .groupBy { it.team }
-            .mapValues { entry ->
-                val totalRedCards = entry.value.sumOf { it.redCards }
-                val playerCount = entry.value.size
-                totalRedCards.toDouble() / playerCount
-            }
+            .mapValues { entry -> entry.value.map { it.redCards }.average() }
             .maxByOrNull { it.value }?.key
             ?: throw RuntimeException("Не найдено ни одной команды")
     }

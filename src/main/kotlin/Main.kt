@@ -7,15 +7,13 @@ import javax.swing.JFrame
 
 fun main(args: Array<String>) {
     val resolver = Resolver()
-    val countPlayersWithoutAgency = resolver.getCountWithoutAgency()
-    val bestDefender = resolver.getBestScorerDefender()
-    val expensiveGermanPlayer=resolver.getTheExpensiveGermanPlayerPosition()
-    val rudestTeam = resolver.getTheRudestTeam()
-
-    println("1. Количество игроков, интересы которых не представляет агенство -- $countPlayersWithoutAgency")
-    println("2. Защитник ${bestDefender.first} набрал большее число голов ${bestDefender.second}")
-    println("3. Самый дорогой немецкий игрок играет на позиции $expensiveGermanPlayer")
-    println("4. Команда с наибольшим средним числом красных карточек на одного игрока ${rudestTeam.name}")
+    Resolver().let {
+        println("1. Количество игроков, интересы которых не представляет агенство -- ${it.getCountWithoutAgency()}")
+        val bestDefender = resolver.getBestScorerDefender()
+        println("2. Защитник ${bestDefender.first} набрал большее число голов ${bestDefender.second}")
+        println("3. Самый дорогой немецкий игрок играет на позиции ${it.getTheExpensiveGermanPlayerPosition()}")
+        println("4. Команда с наибольшим средним числом красных карточек на одного игрока ${it.getTheRudestTeam().name}")
+    }
 
     val topTeams = resolver.topTeamsByTransferCost()
 
