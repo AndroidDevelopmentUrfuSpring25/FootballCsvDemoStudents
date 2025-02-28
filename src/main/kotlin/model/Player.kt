@@ -1,9 +1,9 @@
 package model
 
-class Player(
+data class Player(
     val name: String,
     val team: Team,
-    val position: String,
+    val position: PlayerPosition,
     val nationality: String,
     val agency: String,
     val transferCost: Int,
@@ -12,4 +12,4 @@ class Player(
     val assists: Int,
     val yellowCards: Int,
     val redCards: Int
-) {}
+)

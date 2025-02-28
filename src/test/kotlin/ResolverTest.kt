@@ -12,7 +12,7 @@ class ResolverTest {
         Player(
             "Player 1",
             team = Team("Team 1", "City 1"),
-            position = "DEFENDER",
+            position = PlayerPosition.DEFENDER,
             nationality = "Russia",
             agency = "Agency 1",
             transferCost = 1000,
@@ -25,7 +25,7 @@ class ResolverTest {
         Player(
             "Player 2",
             team = Team("Team 2", "City 2"),
-            position = "DEFENDER",
+            position = PlayerPosition.DEFENDER,
             nationality = "Germany",
             agency = "",
             transferCost = 1000,
@@ -38,7 +38,7 @@ class ResolverTest {
         Player(
             "Player 3",
             team = Team("Team 1", "City 1"),
-            position = "FORWARD",
+            position = PlayerPosition.FORWARD,
             nationality = "Germany",
             agency = "",
             transferCost = 3000,
@@ -69,8 +69,8 @@ class ResolverTest {
 
     @Test
     fun testTheRudestTeam() {
-        val actual = resolver.getTheRudestTeam().name to resolver.getTheRudestTeam().city
-        val expected = "Team 2" to "City 2"
+        val actual = resolver.getTheRudestTeam()
+        val expected = Team("Team 2", "City 2")
 
         assertEquals(expected, actual)
     }

@@ -1,5 +1,9 @@
 package parser
 
+import helpers.orZero
+import model.Player
+import model.PlayerPosition
+import model.Team
 import java.io.File
 
 object CsvParser {
@@ -13,6 +17,25 @@ object CsvParser {
             headers.zip(line).toMap()
         }
 
-        return parsedObject;
+        return parsedObject
+    }
+
+    fun getPlayers(fileName: String): List<Player> = this.parse(fileName).map { row ->
+        Player(
+            name = row["Name"].orEmpty(),
+            team = Team(
+                name = row["Team"].orEmpty(),
+                city = row["City"].orEmpty()
+            ),
+            position = PlayerPosition.valueOf(row["Position"].orEmpty()),
+            nationality = row["Nationality"].orEmpty(),
+            agency = row["Agency"].orEmpty(),
+            transferCost = row["Transfer cost"]?.toIntOrNull().orZero(),
+            participations = row["Participations"]?.toIntOrNull().orZero(),
+            goals = row["Goals"]?.toIntOrNull().orZero(),
+            assists = row["Assists"]?.toIntOrNull().orZero(),
+            yellowCards = row["Yellow cards"]?.toIntOrNull().orZero(),
+            redCards = row["Red cards"]?.toIntOrNull().orZero()
+        )
     }
 }
