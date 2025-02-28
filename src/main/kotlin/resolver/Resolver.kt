@@ -22,9 +22,10 @@ class Resolver(
             .maxByOrNull { it.transferCost }
             ?.position?.russianPositionName ?: throw NotImplementedException("No player found")
 
-    override fun getTheRudestTeam(): Team =
-        players.maxByOrNull { it.redCards }?.team
-            ?: throw NotImplementedException("No player found")
+    override fun getTheRudestTeam(): Team = players
+        .groupBy { player -> player.team }
+        .mapValues { entry -> entry.value.map { team -> team.redCards }.average() }
+        .maxBy { entry -> entry.value }.key
 
     override fun getNationalityShare(): Map<String, Double> =
         players.groupingBy { it.nationality }.eachCount()

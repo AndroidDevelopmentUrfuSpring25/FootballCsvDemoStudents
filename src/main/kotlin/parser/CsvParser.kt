@@ -14,12 +14,9 @@ object CsvParser {
         try {
             var lineCounter = 0
             Scanner(File("src/main/resources/fakePlayers.csv")).use { scanner ->
+                scanner.nextLine()
                 while (scanner.hasNextLine()) {
                     val currentLine: String = scanner.nextLine()
-                    if (lineCounter == 0) {
-                        lineCounter++
-                        continue
-                    }
                     lineCounter++
                     players.add(getRecordFromLine(currentLine))
                 }
@@ -33,20 +30,19 @@ object CsvParser {
 
     private fun getRecordFromLine(csvLine: String): Player {
         val delimiter = ";"
-        val splitCSVLine =
-            csvLine.split(delimiter.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val splitCSVLine = csvLine.split(delimiter)
         val player = Player(
             name = splitCSVLine[0],
             team = Team(splitCSVLine[1], splitCSVLine[2]),
             position = Position.from(splitCSVLine[3]),
             nationality = splitCSVLine[4],
             agency = splitCSVLine[5],
-            transferCost = splitCSVLine[6].toInt(),
-            participations = splitCSVLine[7].toInt(),
-            goals = splitCSVLine[8].toInt(),
-            assists = splitCSVLine[9].toInt(),
-            yellowCards = splitCSVLine[10].toInt(),
-            redCards = splitCSVLine[11].toInt(),
+            transferCost = splitCSVLine[6].toIntOrNull() ?: 0,
+            participations = splitCSVLine[7].toIntOrNull() ?: 0,
+            goals = splitCSVLine[8].toIntOrNull() ?: 0,
+            assists = splitCSVLine[9].toIntOrNull() ?: 0,
+            yellowCards = splitCSVLine[10].toIntOrNull() ?: 0,
+            redCards = splitCSVLine[11].toIntOrNull() ?: 0,
         )
 
         return player
