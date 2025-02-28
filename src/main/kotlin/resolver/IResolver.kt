@@ -11,8 +11,11 @@ interface IResolver {
     fun getBestScorerDefender(): Pair<String, Int>
 
     // Выведите русское название позиции самого дорогого немецкого игрока.
-    fun getTheExpensiveGermanPlayerPosition(): String
+    fun getTheMostExpensiveGermanPlayerPosition(): String
 
     // Выберите команду с наибольшим числом удалений на одного игрока.
     fun getTheRudestTeam(): Team
+
+    // Вариант 4 доля игроков из разных стран.
+    fun getNationalityShare(): Map<String, Double>
 }
