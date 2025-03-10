@@ -1,8 +1,8 @@
 package model
 
-class Position {
-    val mapOfPositions = mapOf("MIDFIELD" to "полузащитник",
-        "DEFENDER" to "защитник",
-        "FORWARD" to "нападающий",
-        "GOALKEEPER" to "Вратарь")
+enum class PlayerPosition(val russianName: String) {
+    MIDFIELD("Центровой"),
+    DEFENDER("Защитник"),
+    FORWARD("Нападающий"),
+    GOALKEEPER("Вратарь")
 }

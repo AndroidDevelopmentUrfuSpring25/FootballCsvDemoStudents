@@ -1,23 +1,24 @@
 package parser
 
 import model.*
+import model.PlayerPosition
 import java.io.File
 
 object CsvParser {
-    val address = "src/main/resources/fakePlayers.csv"
+    private const val address = "src/main/resources/fakePlayers.csv"
 
-    fun getText (): List<Player> {
-        var listOfPlayers = mutableListOf<Player>()
-        for (line in File(address).readLines().drop(1)){
-            val properties = line.split(";")
-            val currTeam = Team(
+    fun getText(): List<Player> {
+        val listOfPlayers = mutableListOf<Player>()
+        File(address).readLines().drop(1).forEach {
+            val properties = it.split(";")
+            val currentTeam = Team(
                 name = properties[1],
                 city = properties[2]
             )
-            var currentPlayer = Player(
+            val currentPlayer = Player(
                 name = properties[0],
-                team = currTeam,
-                position = getRusPosition(properties[3]),
+                team = currentTeam,
+                position = PlayerPosition.valueOf(properties[3].orEmpty()),
                 nationality = properties[4],
                 agency = properties[5],
                 transferCost = properties[6].toInt(),
@@ -25,14 +26,10 @@ object CsvParser {
                 goals = properties[8].toInt(),
                 assists = properties[9].toInt(),
                 yellowCards = properties[10].toInt(),
-                redCards = properties[11].toInt())
+                redCards = properties[11].toInt()
+            )
             listOfPlayers.add(currentPlayer)
         }
         return listOfPlayers
-    }
-
-    private fun getRusPosition(engPosition: String): String {
-        val position = Position()
-        return position.mapOfPositions[engPosition]?: throw IllegalArgumentException("Position not found")
     }
 }

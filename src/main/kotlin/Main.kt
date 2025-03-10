@@ -1,4 +1,3 @@
-import model.Position
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.ChartPanel
 import org.jfree.data.xy.XYSeries
@@ -6,6 +5,7 @@ import org.jfree.data.xy.XYSeriesCollection
 import parser.CsvParser
 import resolver.Resolver
 import javax.swing.JFrame
+import model.PlayerPosition
 
 
 fun main(args: Array<String>) {
@@ -18,9 +18,10 @@ fun main(args: Array<String>) {
         println("Команда с наибольшим средним числом красных карточек на одного игрока: ${it.getTheRudestTeam().name}")
     }
 
-    val series = XYSeries("Зависимость количества забитых голов от трансферной стоимости для нападающих")
+    val series =
+        XYSeries("Зависимость количества забитых голов от трансферной стоимости для нападающих")
     players
-        .filter { it.position == "нападающий" }
+        .filter { it.position == PlayerPosition.FORWARD }
         .forEach { series.add(it.transferCost, it.goals) }
 
     val chart = ChartFactory.createXYLineChart(

@@ -1,10 +1,10 @@
 package resolver
 
 import model.Player
+import model.PlayerPosition
 import model.Team
 
-class Resolver (_players: List<Player>){
-    val players: List<Player> = _players
+class Resolver(private val players: List<Player>) {
 
     fun getCountWithoutAgency(): Int {
         return players.count { it.agency.isEmpty() }
@@ -12,27 +12,27 @@ class Resolver (_players: List<Player>){
 
     fun getBestScorerDefender(): Pair<String, Int> {
         return players
-            .filter { it.position == "защитник" }
+            .filter { it.position == PlayerPosition.DEFENDER }
             .maxByOrNull { it.goals }
-            ?.let { it.name to it.goals }?: throw Exception("not found")
+            ?.let { it.name to it.goals } ?: throw Exception("not found")
     }
 
-    fun getTheExpensiveGermanPlayerPosition(): String {
+    fun getTheExpensiveGermanPlayerPosition(): PlayerPosition {
         return players
             .filter { it.nationality == "Germany" }
             .maxByOrNull { it.transferCost }
-            ?.position?: throw Exception("not found")
+            ?.position ?: throw Exception("not found")
     }
 
     fun getTheRudestTeam(): Team {
         val teamWithMaxAvgRedCards = players
             .groupBy { it.team.name }
-            .mapValues { entry -> entry.value.map { it.redCards }.average()}
+            .mapValues { entry -> entry.value.map { it.redCards }.average() }
             .maxByOrNull { it.value }
 
         return teamWithMaxAvgRedCards?.let {
             players.first { player -> player.team.name == it.key }.team
-        } ?: throw IllegalArgumentException("not found")
+        } ?: throw Exception("not found")
 
     }
 }

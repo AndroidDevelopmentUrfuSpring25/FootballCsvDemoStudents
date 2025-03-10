@@ -1,5 +1,6 @@
 package model
 
-class Team (
+class Team(
     val city: String,
-    val name: String )
+    val name: String
+)
