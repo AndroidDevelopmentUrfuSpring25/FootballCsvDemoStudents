@@ -1,52 +1,47 @@
 package resolver
 
 import model.Player
+import model.Team
 
-class Resolver : IResolver {
-    override fun countPlayersWithoutAgency(players: List<Player>): Int {
+class Resolver(private val players: List<Player>) : IResolver {
+
+    override fun getCountWithoutAgency(): Int {
         return players.count { it.agency == null }
     }
 
-    override fun topScoringDefender(players: List<Player>): Pair<String, Int>? {
-        return players.filter { it.position.lowercase().contains("def") }
+    override fun getBestScorerDefender(): Pair<String, Int> {
+        return players.filter { it.position.name == "DEFENDER" }
             .maxByOrNull { it.goals }
             ?.let { it.name to it.goals }
+            ?: ("Unknown Player" to 0)
     }
 
-
-    override fun mostExpensiveGermanPlayerPosition(players: List<Player>): String? {
-        val germanPlayer = players.filter { it.nationality.lowercase().contains("ger") }
+    override fun getTheExpensiveGermanPlayerPosition(): String {
+        val germanPlayer = players.filter { it.nationality == "Germany" }
             .maxByOrNull { it.transferValue }
 
-        val position = germanPlayer?.position
-
-        return when (position?.lowercase()) {
-            "forward" -> "Нападающий"
-            "midfielder" -> "Полузащитник"
-            "defender" -> "Защитник"
-            "goalkeeper" -> "Вратарь"
+        return when (germanPlayer?.position?.name ?: "UNKNOWN") {
+            "FORWARD" -> "Нападающий"
+            "MIDFIELDER" -> "Полузащитник"
+            "DEFENDER" -> "Защитник"
+            "GOALKEEPER" -> "Вратарь"
             else -> "Неизвестная позиция"
         }
     }
 
-
-
-    override fun teamWithMostRedCards(players: List<Player>): String? {
+    override fun getTheRudestTeam(): Team {
         return players.groupBy { it.team }
-            .mapValues { (_, teamPlayers) ->
-                teamPlayers.sumOf { it.redCards } / teamPlayers.size.toDouble()
-            }
+            .mapValues { (_, teamPlayers) -> teamPlayers.map { it.redCards }.average() }
             .maxByOrNull { it.value }
-            ?.key
+            ?.key ?: Team("Unknown Team", "Unknown City")
     }
-    override fun top10TeamsByTransferValue(players: List<Player>): List<Pair<String, Double>> {
+
+    override fun top10TeamsByTransferValue(): List<Pair<String, Double>> {
         return players.groupBy { it.team }
             .mapValues { (_, teamPlayers) -> teamPlayers.sumOf { it.transferValue } }
             .toList()
             .sortedByDescending { it.second }
             .take(10)
+            .map { it.first.name to it.second }
     }
-
 }
-
-

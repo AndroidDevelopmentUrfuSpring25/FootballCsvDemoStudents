@@ -1,11 +1,21 @@
 package resolver
 
-import model.Player
+import model.Team
 
 interface IResolver {
-    fun countPlayersWithoutAgency(players: List<Player>): Int
-    fun topScoringDefender(players: List<Player>): Pair<String, Int>?
-    fun mostExpensiveGermanPlayerPosition(players: List<Player>): String?
-    fun teamWithMostRedCards(players: List<Player>): String?
-    fun top10TeamsByTransferValue(players: List<Player>): List<Pair<String, Double>>
+
+
+    fun getCountWithoutAgency(): Int
+
+
+    fun getBestScorerDefender(): Pair<String, Int>
+
+
+    fun getTheExpensiveGermanPlayerPosition(): String
+
+
+    fun getTheRudestTeam(): Team
+
+    fun top10TeamsByTransferValue(): List<Pair<String, Double>>
+
 }
