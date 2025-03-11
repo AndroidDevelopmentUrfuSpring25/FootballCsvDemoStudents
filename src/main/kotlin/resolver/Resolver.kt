@@ -1,45 +1,47 @@
 package resolver
 
 import model.Player
+import model.Team
+import model.PlayerPosition
 
-class Resolver : IResolver {
+class Resolver(private val players: List<Player>) : IResolver {
 
-    override fun countPlayersWithoutAgency(players: List<Player>): Int {
+    override fun getCountWithoutAgency(): Int {
         return players.count { it.agency.isNullOrEmpty() }
     }
 
-    override fun topScoringDefender(players: List<Player>): Pair<String, Int>? {
-        return players.filter { it.position.lowercase().contains("def") }
+    override fun getBestScorerDefender(): Pair<String, Int> {
+        return players.filter { it.position == PlayerPosition.DEFENDER }
             .maxByOrNull { it.goals }
             ?.let { it.name to it.goals }
+            ?: ("Нет данных" to 0)
     }
 
-    override fun mostExpensiveGermanPlayerPosition(players: List<Player>): String? {
-        return players.filter { it.nationality.lowercase().contains("ger") }
+    override fun getTheExpensiveGermanPlayerPosition(): String {
+        val germanPlayer = players.filter { it.nationality == "Germany" }
             .maxByOrNull { it.transferValue }
-            ?.let { mostExpensive ->
-                when (mostExpensive.position.uppercase()) {
-                    "FORWARD" -> "Нападающий"
-                    "MIDFIELD" -> "Полузащитник"
-                    "DEFENDER" -> "Защитник"
-                    "GOALKEEPER" -> "Вратарь"
-                    else -> "Неизвестная позиция"
-                }
-            }
+
+        return when (germanPlayer?.position?.name ?: "UNKNOWN") {
+            "FORWARD" -> "Нападающий"
+            "MIDFIELDER" -> "Полузащитник"
+            "DEFENDER" -> "Защитник"
+            "GOALKEEPER" -> "Вратарь"
+            else -> "Неизвестная позиция"
+        }
     }
 
-    override fun teamWithMostRedCards(players: List<Player>): String? {
+    override fun getTheRudestTeam(): String {
         return players.groupBy { it.team }
             .mapValues { (_, teamPlayers) ->
                 teamPlayers.sumOf { it.redCards } / teamPlayers.size.toDouble()
             }
             .maxByOrNull { it.value }
-            ?.key
+            ?.key?.name ?: "Нет данных"
     }
 
-    fun calculatePositionDistribution(players: List<Player>): Map<String, Double> {
+    override fun calculatePositionDistribution(): Map<String, Double> {
         val totalPlayers = players.size
-        return players.groupingBy { it.position }
+        return players.groupingBy { it.position.toString() }
             .eachCount()
             .mapValues { (_, count) -> (count.toDouble() / totalPlayers) * 100 }
     }

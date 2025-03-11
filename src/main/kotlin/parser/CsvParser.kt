@@ -1,27 +1,33 @@
 package parser
 
 import model.Player
+import model.Team
+import model.PlayerPosition
 import java.io.File
 
 object CsvParser {
-    fun readPlayersFromCsv(filePath: String): List<Player> {
+    fun readPlayersFromCSV(filePath: String): List<Player> {
         return File(filePath).readLines()
             .drop(1)
-            .map { line ->
+            .mapNotNull { line ->
                 val parts = line.split(";")
+
+                if (parts.size < 12) return@mapNotNull null
 
                 Player(
                     name = parts[0],
-                    team = parts[1],
-                    position = parts[3],
+                    team = Team(name = parts[1], city = parts[2]),
                     nationality = parts[4],
-                    agency = if (parts[5].isNotEmpty()) parts[5] else null,
-                    transferValue = parts[6].toDouble(),
-                    matches = parts[7].toInt(),
-                    goals = parts[8].toInt(),
-                    assists = parts[9].toInt(),
-                    yellowCards = parts[10].toInt(),
-                    redCards = parts[11].toInt()
+                    position = parts[3].takeIf { it.isNotBlank() }
+                        ?.let { runCatching { enumValueOf<PlayerPosition>(it.uppercase()) }.getOrNull() }
+                        ?: PlayerPosition.MIDFIELDER,
+                    agency = parts[5].ifBlank { null },
+                    transferValue = parts[6].toDoubleOrNull() ?: 0.0,
+                    matchesPlayed = parts[7].toIntOrNull() ?: 0,
+                    goals = parts[8].toIntOrNull() ?: 0,
+                    assists = parts[9].toIntOrNull() ?: 0,
+                    yellowCards = parts[10].toIntOrNull() ?: 0,
+                    redCards = parts[11].toIntOrNull() ?: 0
                 )
             }
     }

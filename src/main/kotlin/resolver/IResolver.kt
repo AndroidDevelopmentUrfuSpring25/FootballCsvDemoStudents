@@ -1,10 +1,9 @@
 package resolver
 
-import model.Player
-
 interface IResolver {
-    fun countPlayersWithoutAgency(players: List<Player>): Int
-    fun topScoringDefender(players: List<Player>): Pair<String, Int>?
-    fun mostExpensiveGermanPlayerPosition(players: List<Player>): String?
-    fun teamWithMostRedCards(players: List<Player>): String?
+    fun getCountWithoutAgency(): Int
+    fun getBestScorerDefender(): Pair<String, Int>
+    fun getTheExpensiveGermanPlayerPosition(): String
+    fun getTheRudestTeam(): String
+    fun calculatePositionDistribution(): Map<String, Double>
 }
