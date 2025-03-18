@@ -1,10 +1,9 @@
 package model
 
-data class Player(
+class Player(
     val name: String,
-    val team: String,
-    val city: String,
-    val position: String,
+    val team: Team,
+    val position: PlayerPosition,
     val nationality: String,
     val agency: String?,
     val transferCost: Int,
@@ -14,3 +13,10 @@ data class Player(
     val yellowCards: Int,
     val redCards: Int
 )
+
+enum class PlayerPosition() {
+    FORWARD,
+    MIDFIELDER,
+    DEFENDER,
+    GOALKEEPER
+}
