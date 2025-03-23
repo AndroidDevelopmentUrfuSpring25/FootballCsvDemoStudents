@@ -16,37 +16,16 @@ object CsvParser {
     fun parse(filePath: String): List<Map<NameParameters, String>> {
         val file = File(filePath)
         if (file.exists()) {
-            val dataLinesToList = mutableListOf<List<String>>()
-            file.forEachLine { line ->
-                val columnsValue = line.split(";")
-                dataLinesToList.add(columnsValue)
-            }
+            val dataLinesToList: List<List<String>> = file.readLines().map { it.split(";") }
 
-            val structuredData = mutableListOf<Map<NameParameters, String>>()
             val columns = dataLinesToList[0].map { title ->
-                NameParameters.entries.find { it.title == title }
+                NameParameters.entries.find { it.title == title }!!
             }
-            for (i in 1..<dataLinesToList.size) {
-                structuredData.add(structure(columns, dataLinesToList[i]))
-            }
-
+            val structuredData = dataLinesToList.drop(1).map { columns.zip(it).toMap() }
             return structuredData.toList()
 
         } else {
             throw FileNotFoundException("Файл $filePath не найден")
         }
-    }
-
-    /**
-     * Структурирует данные в словарь
-     */
-    private fun structure(columns: List<NameParameters?>, values: List<String>): Map<NameParameters, String> {
-        val columnWithValue = mutableMapOf<NameParameters, String>()
-        for (i in columns.indices) {
-            val param = columns[i]
-            param ?: throw Exception("Не удалось преобразовать параметр")
-            columnWithValue.put(param, values[i])
-        }
-        return columnWithValue.toMap()
     }
 }

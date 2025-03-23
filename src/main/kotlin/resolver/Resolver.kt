@@ -14,7 +14,7 @@ class Resolver(
 
     override fun getCountWithoutAgency(): Int {
         var countWithoutAgency = 0
-        for (player in playerList) {
+        playerList.forEach { player ->
             if (player.agency == null || player.agency == "")
                 countWithoutAgency++
         }
@@ -22,59 +22,38 @@ class Resolver(
     }
 
     override fun getBestScorerDefender(): Pair<String, Int> {
-        var maxGoals = 0
-        var bestScorer = "No Name"
-        for (player in playerList) {
-            if (player.positionOnField == PositionTranslation.DEFENDER)
-                if (maxGoals < (player.goals ?: 0)) {
-                    bestScorer = player.name ?: "No Name"
-                    maxGoals = player.goals ?: 0
-                }
-        }
-        return Pair(bestScorer, maxGoals)
+        val defenderPlayers = playerList.filter { it.positionOnField == PositionTranslation.DEFENDER }
+        return defenderPlayers
+            .maxBy { it.goals ?: 0 }
+            .let { Pair( it.name ?: "No Name", it.goals ?: 0) }
     }
 
     override fun getTheExpensiveGermanPlayerPosition(): String {
-        var maxCost = 0
-        var expensiveGermanPlayer: Player? = null
+        val germanPlayers = playerList.filter { it.nationality == "Germany" }
+        if(germanPlayers.isEmpty())
+            throw Exception("Нет подходящих кандидатов")
 
-        for (player in playerList) {
-            if (player.nationality == "Germany")
-                if (maxCost < (player.transferCost ?: 0)) {
-                    expensiveGermanPlayer = player
-                    maxCost = player.transferCost ?: 0
-                }
-        }
-        expensiveGermanPlayer ?: throw Exception("Нет подходящих кандидатов")
-        return expensiveGermanPlayer.positionOnField.translation
+        return germanPlayers
+            .maxBy { it.transferCost ?: 0 }.positionOnField.translation
     }
 
     override fun getTheRudestTeam(): Team {
-        var maxAverageRemoved: Float = 0f
-        var rudestTeam: Team? = null
-        for (team in teamList) {
-            var teamRemoved: Float = 0f
-            for (player in team.getPlayers()) {
-                teamRemoved += player.redCards ?: 0
-            }
 
-            val teamAverageRemoved = teamRemoved / team.getPlayers().size
-            if (maxAverageRemoved < teamAverageRemoved) {
-                maxAverageRemoved = teamAverageRemoved
-                rudestTeam = team
-            }
+        val rudestTeam = teamList.maxByOrNull { team ->
+            val players = team.getPlayers()
+            val countRedCards: Float = players
+                .sumOf { player -> player.redCards ?: 0 }
+                .toFloat()
+            countRedCards / players.size
         }
         rudestTeam ?: throw Exception("Нет подходящих команд")
         return rudestTeam
     }
 
     fun getDistributionPositions(): Map<PositionTranslation, Int> {
-        val numberPlayersInPositions = PositionTranslation.entries.associateWith { 0 }.toMutableMap()
-        for (player in playerList) {
-            val position = player.positionOnField
-            numberPlayersInPositions[position] = numberPlayersInPositions.getValue(position) + 1
-        }
-        return numberPlayersInPositions.toMap()
+        return playerList.groupingBy { it.positionOnField }
+            .eachCount()
+            .withDefault { 0 }
     }
 
 }

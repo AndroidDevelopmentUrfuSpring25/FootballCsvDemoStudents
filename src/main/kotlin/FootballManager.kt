@@ -12,7 +12,7 @@ class FootballManager(
     private val teamMap = mutableMapOf<String, Team>()
 
     init {
-        for (footballerData in footballData) {
+        footballData.forEach { footballerData ->
 
             val player = Player(
                 name = footballerData[NameParameters.NAME],
@@ -46,9 +46,9 @@ class FootballManager(
 
     private fun typifyPosition(stringPosition: String?, name: String?): PositionTranslation {
         stringPosition ?: throw Exception("Позиция игрока $name не найдена")
-        val position = PositionTranslation.entries.find {
+        val position = PositionTranslation.entries.first {
             it.name == (stringPosition.uppercase())
-        } ?: throw Exception("Неизвестная позиция $stringPosition")
+        }
         return position
     }
 
