@@ -1,16 +1,17 @@
 package model
 
+import enums.Position
+
 data class Player(
-    val name: String?,
-    val team: String,
-    val city: String,
-    val position: String,
+    val name: String,
+    val team: Team,
+    val position: Position,
     val nationality: String,
     val agency: String,
-    val transferCost: String,
-    val participations: String,
-    val goals: String,
-    val assists: String,
-    val yellowCards: String,
-    val redCards: String,
+    val transferCost: Int,
+    val participations: Int,
+    val goals: Int,
+    val assists: Int,
+    val yellowCards: Int,
+    val redCards: Int,
 )
